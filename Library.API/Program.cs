@@ -1,4 +1,8 @@
+using FluentValidation;
+using Library.DAL.Repositories.Interfaces;
+using Library.DAL.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +15,19 @@ builder.Services.AddControllers();
 // 2. إضافة خدمات توليد الـ Swagger OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(); // هذا السطر يقوم بإعداد مولد السواجر
+
+// الطريقة الحديثة والمدعومة في AutoMapper 16+ لتعريف الـ Profiles
+builder.Services.AddAutoMapper(cfg =>
+{
+    // أخبر الأوتو مابر أن يبحث تلقائياً عن كلاسات الـ Profile داخل مشروعك
+    cfg.AddMaps(typeof(AuthorProfile).Assembly);
+});
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateAuthorValidator>();
+
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
