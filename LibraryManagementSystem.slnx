@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Library.API/Library.API.csproj" />
+  <Project Path="Library.BLL/Library.BLL.csproj" />
+  <Project Path="Library.DAL/Library.DAL.csproj" />
+  <Project Path="Library.Domain/Library.Domain.csproj" Id="29fc38fe-421e-47a6-b767-7992ceddd1a5" />
+</Solution>
