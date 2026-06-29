@@ -1,0 +1,7 @@
+
+
+
+public class ApplicationDbContext : DbContext
+{
+
+}
