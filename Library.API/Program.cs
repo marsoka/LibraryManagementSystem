@@ -2,7 +2,7 @@ using FluentValidation;
 using Library.DAL.Repositories.Interfaces;
 using Library.DAL.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +24,9 @@ builder.Services.AddAutoMapper(cfg =>
 });
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreateAuthorValidator>();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+
 
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 

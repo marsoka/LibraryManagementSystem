@@ -6,17 +6,23 @@ public class CreateAuthorValidator : AbstractValidator<CreateAuthorDto>
     {
         RuleFor(a => a.FullName)
             .NotEmpty()
-            .MaximumLength(150);
+                .WithMessage("Name is required.")
+            .MaximumLength(150)
+                .WithMessage("Name cannot exceed 150 characters.");
 
         RuleFor(a => a.Biography)
-            .NotEmpty();
+            .NotEmpty()
+            .WithMessage("Biography is required.");
 
         RuleFor(a => a.DateOfBirth)
-            .NotEmpty();
+            .NotEmpty()
+            .WithMessage("Data Of Birth is required.");
 
         RuleFor(a => a.Nationality)
             .NotEmpty()
-            .MaximumLength(100);
+            .WithMessage("Nationality is required.")
+            .MaximumLength(100)
+            .WithMessage("Nationality cannot exceed 100 characters.");
 
     }
 }
