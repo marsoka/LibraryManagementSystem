@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Library.API.Extensions;
 using Library.BLL.Responses;
 using Library.DAL.Repositories.Implementations;
 using Library.DAL.Repositories.Interfaces;
@@ -10,58 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
 builder.Services.AddControllers();
 
+builder.Services.AddApplicationServices(builder.Configuration);
 
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.InvalidModelStateResponseFactory = context =>
-    {
-        var errors = context.ModelState
-            .Values
-            .SelectMany(v => v.Errors)
-            .Select(e => e.ErrorMessage)
-            .ToList();
+builder.Services.AddSwaggerServices();
 
-        var response = new ErrorResponse
-        {
-            Success = false,
-            StatusCode = StatusCodes.Status400BadRequest,
-            Message = "Validation failed.",
-            Errors = errors
-        };
-
-        return new BadRequestObjectResult(response);
-    };
-});
-
-
-// Swagger OpenAPI
-builder.Services.AddEndpointsApiExplorer();
-
-// This line sets up the swagger generator
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddAutoMapper(cfg =>
-{
-    cfg.AddMaps(typeof(AuthorProfile).Assembly);
-});
-
-builder.Services.AddValidatorsFromAssemblyContaining<CreateAuthorValidator>();
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddFluentValidationClientsideAdapters();
-
-
-builder.Services.AddScoped<IAuthorService, AuthorService>();
-
-builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+builder.Services.AddValidationResponses();
 
 
 var app = builder.Build();
@@ -75,10 +31,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(); // لتفعيل الواجهة الرسومية التي تراها في المتصفح
 }
 
-app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
+
+app.UseApplicationMiddlewares();
+
 app.UseAuthorization();
+
 app.MapControllers();
 
 
