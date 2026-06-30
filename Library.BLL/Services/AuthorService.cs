@@ -1,5 +1,6 @@
 
 using AutoMapper;
+using Library.BLL.Exceptions.NotFoundExceptions;
 using Library.DAL.Repositories.Interfaces;
 
 public class AuthorService : IAuthorService
@@ -22,22 +23,25 @@ public class AuthorService : IAuthorService
 
     public async Task DeleteAuthorAsync(int id)
     {
-        if (await _repo.AuthorIsExistsAsync(id))
+        if (!await _repo.AuthorIsExistsAsync(id))
         {
-            await _repo.DeleteAuthorAsync(id);
+            throw new AuthorNotFoundException(id);
         }
+
+        await _repo.DeleteAuthorAsync(id);
     }
 
     public async Task<AuthorDto?> GetAuthorAsync(int id)
     {
         var author = await _repo.GetAuthorAsync(id);
-        if (author != null)
+
+        if (author == null)
         {
-            var dto = _mapper.Map<AuthorDto>(author);
-            return dto;
+            throw new AuthorNotFoundException(id);
         }
-        else
-            return null;
+
+        var dto = _mapper.Map<AuthorDto>(author);
+        return dto;
     }
 
     public async Task<IEnumerable<AuthorDto>> GetAuthorsAsync()
@@ -49,11 +53,15 @@ public class AuthorService : IAuthorService
     public async Task UpdateAuthorAsync(int id, UpdateAuthorDto dto)
     {
         var author = await _repo.GetAuthorAsync(id);
-        if (author != null)
-        {
-            _mapper.Map(dto, author);
 
-            await _repo.UpdateAuthorAsync(author);
+        if (author == null)
+        {
+            throw new AuthorNotFoundException(id);
         }
+
+        _mapper.Map(dto, author);
+
+        await _repo.UpdateAuthorAsync(author);
+
     }
 }

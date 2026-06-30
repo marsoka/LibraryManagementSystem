@@ -1,8 +1,10 @@
 using FluentValidation;
-using Library.DAL.Repositories.Interfaces;
-using Library.DAL.Repositories.Implementations;
-using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
+using Library.BLL.Responses;
+using Library.DAL.Repositories.Implementations;
+using Library.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,14 +14,38 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddControllers();
 
-// 2. إضافة خدمات توليد الـ Swagger OpenAPI
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(); // هذا السطر يقوم بإعداد مولد السواجر
 
-// الطريقة الحديثة والمدعومة في AutoMapper 16+ لتعريف الـ Profiles
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Values
+            .SelectMany(v => v.Errors)
+            .Select(e => e.ErrorMessage)
+            .ToList();
+
+        var response = new ErrorResponse
+        {
+            Success = false,
+            StatusCode = StatusCodes.Status400BadRequest,
+            Message = "Validation failed.",
+            Errors = errors
+        };
+
+        return new BadRequestObjectResult(response);
+    };
+});
+
+
+// Swagger OpenAPI
+builder.Services.AddEndpointsApiExplorer();
+
+// This line sets up the swagger generator
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddAutoMapper(cfg =>
 {
-    // أخبر الأوتو مابر أن يبحث تلقائياً عن كلاسات الـ Profile داخل مشروعك
     cfg.AddMaps(typeof(AuthorProfile).Assembly);
 });
 
@@ -37,7 +63,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -47,46 +75,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(); // لتفعيل الواجهة الرسومية التي تراها في المتصفح
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
-app.MapGet("/weatherforecast/10", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast10");
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
