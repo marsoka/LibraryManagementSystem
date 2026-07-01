@@ -19,10 +19,12 @@ public class PublisherConfiguration : IEntityTypeConfiguration<Publisher>
             .HasMaxLength(150);
 
         builder.Property(p => p.Address)
+            .IsRequired()
             .HasColumnType("varchar")
             .HasMaxLength(250);
 
         builder.Property(p => p.Phone)
+            .IsRequired()
             .HasColumnType("varchar")
             .HasMaxLength(20);
     }

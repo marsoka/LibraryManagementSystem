@@ -21,15 +21,7 @@ namespace Library.DAL.Repositories.Implementations
 
         public async Task<bool> AuthorIsExistsAsync(int id)
         {
-            var author = await _context.Authors.FindAsync(id);
-            if (author != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return await _context.Authors.AnyAsync(a => a.Id == id);
         }
 
         public async Task DeleteAuthorAsync(int id)

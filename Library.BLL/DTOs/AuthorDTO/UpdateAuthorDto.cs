@@ -1,8 +1,8 @@
 
 public class UpdateAuthorDto
 {
-    public string FullName { get; set; }
-    public string Biography { get; set; }
+    public required string FullName { get; set; }
+    public required string Biography { get; set; }
     public DateOnly? DateOfBirth { get; set; }
-    public string Nationality { get; set; }
+    public required string Nationality { get; set; }
 }

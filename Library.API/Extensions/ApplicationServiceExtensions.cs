@@ -1,5 +1,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Library.BLL.Interfaces;
+using Library.BLL.Services;
 using Library.DAL.Repositories.Implementations;
 using Library.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,14 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IAuthorRepository, AuthorRepository>();
 
         services.AddScoped<IAuthorService, AuthorService>();
+
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+        services.AddScoped<ICategoryService, CategoryService>();
+
+        services.AddScoped<IPublisherRepository, PublisherRepository>();
+
+        services.AddScoped<IPublisherService, PublisherService>();
 
         services.AddAutoMapper(cfg =>
         {

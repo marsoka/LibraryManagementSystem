@@ -1,6 +1,7 @@
 
 using AutoMapper;
 using Library.BLL.Exceptions.NotFoundExceptions;
+using Library.BLL.Interfaces;
 using Library.DAL.Repositories.Interfaces;
 
 public class AuthorService : IAuthorService
