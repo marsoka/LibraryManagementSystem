@@ -32,6 +32,10 @@ public static class ApplicationServiceExtensions
 
         services.AddScoped<IPublisherService, PublisherService>();
 
+        services.AddScoped<IBookRepository, BookRepository>();
+
+        services.AddScoped<IBookService, BookService>();
+
         services.AddAutoMapper(cfg =>
         {
             cfg.AddMaps(typeof(AuthorProfile).Assembly);

@@ -14,12 +14,20 @@ namespace Library.DAL.Repositories.Implementations
 
         public async Task<IEnumerable<Book>> GetBooksAsync()
         {
-            return await _context.Books.ToListAsync();
+            return await _context.Books
+                .Include(b => b.Author)
+                .Include(b => b.Category)
+                .Include(b => b.Publisher)
+                .ToListAsync();
         }
 
         public async Task<Book?> GetBookAsync(int id)
         {
-            return await _context.Books.FindAsync(id);
+            return await _context.Books
+                .Include(b => b.Author)
+                .Include(b => b.Category)
+                .Include(b => b.Publisher)
+                .FirstOrDefaultAsync(b => b.Id == id);
         }
 
         public async Task AddBookAsync(Book book)
