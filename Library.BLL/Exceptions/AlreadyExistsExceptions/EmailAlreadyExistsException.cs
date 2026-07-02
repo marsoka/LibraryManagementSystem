@@ -1,6 +1,6 @@
 using Library.BLL.Exceptions.StatusCodesExeptions;
 
-namespace Library.BLL.Exceptions.EmailAlreadyExistsExceptions
+namespace Library.BLL.Exceptions.AlreadyAlreadyExistsException
 {
     public class EmailAlreadyExistsException : ConflictException
     {

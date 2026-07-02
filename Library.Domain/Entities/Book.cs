@@ -12,9 +12,9 @@ public class Book
     public int CategoryId { get; set; }
     public int PublisherId { get; set; }
 
-    public Author Author { get; set; }
-    public Category Category { get; set; }
-    public Publisher Publisher { get; set; }
+    public required Author Author { get; set; }
+    public required Category Category { get; set; }
+    public required Publisher Publisher { get; set; }
     public List<Borrowing>? Borrowings { get; set; }
 
 }

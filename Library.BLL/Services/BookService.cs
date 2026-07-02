@@ -59,10 +59,6 @@ public class BookService : IBookService
             throw new BookNotFoundException(id);
         }
 
-        Console.WriteLine(book.Author == null);
-        Console.WriteLine(book.Category == null);
-        Console.WriteLine(book.Publisher == null);
-
         return _mapper.Map<BookDetailsDto>(book);
     }
 

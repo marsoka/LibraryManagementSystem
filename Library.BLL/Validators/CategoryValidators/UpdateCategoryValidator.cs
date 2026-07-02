@@ -11,6 +11,8 @@ namespace Library.BLL.Validators.CategoryValidators
             RuleFor(c => c.Name)
                 .NotEmpty()
                 .WithMessage("Category name is required.")
+                .Matches(@"^[a-zA-Z\s]+$")
+                .WithMessage("Name can contain letters only.")
                 .MaximumLength(100)
                 .WithMessage("Category name cannot exceed 100 characters.");
 

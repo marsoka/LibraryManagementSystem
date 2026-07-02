@@ -23,6 +23,8 @@ namespace Library.BLL.Validators.PublisherValidators
             RuleFor(p => p.Phone)
                 .NotEmpty()
                 .WithMessage("Phone number is required.")
+                .Matches(@"^\+?[1-9]\d{1,14}$")
+                .WithMessage("Invalid Phone.")
                 .MaximumLength(20)
                 .WithMessage("Phone number cannot exceed 20 characters.");
         }

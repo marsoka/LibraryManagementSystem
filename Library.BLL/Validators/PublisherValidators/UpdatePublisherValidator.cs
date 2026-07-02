@@ -11,6 +11,8 @@ namespace Library.BLL.Validators.PublisherValidators
             RuleFor(p => p.Name)
                 .NotEmpty()
                 .WithMessage("Publisher name is required.")
+                .Matches(@"^[a-zA-Z\s]+$")
+                .WithMessage("Name can contain letters only.")
                 .MaximumLength(150)
                 .WithMessage("Publisher name cannot exceed 150 characters.");
 
@@ -23,6 +25,8 @@ namespace Library.BLL.Validators.PublisherValidators
             RuleFor(p => p.Phone)
                 .NotEmpty()
                 .WithMessage("Phone number is required.")
+                .Matches(@"^\+?[1-9]\d{1,14}$")
+                .WithMessage("Invalid Phone.")
                 .MaximumLength(20)
                 .WithMessage("Phone number cannot exceed 20 characters.");
         }
