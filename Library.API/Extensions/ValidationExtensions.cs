@@ -1,4 +1,4 @@
-using Library.BLL.Responses;
+using Library.Domain.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.API.Extensions;

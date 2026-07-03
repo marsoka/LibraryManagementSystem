@@ -1,0 +1,422 @@
+[
+  {
+    "title": "1984",
+    "isbn": "9780451524935",
+    "publicationYear": 1949,
+    "totalCopies": 150,
+    "price": 14.99,
+    "authorId": 16,
+    "categoryId": 18,
+    "publisherId": 5
+  },
+  {
+    "title": "Animal Farm",
+    "isbn": "9780451526342",
+    "publicationYear": 1945,
+    "totalCopies": 120,
+    "price": 10.99,
+    "authorId": 16,
+    "categoryId": 21,
+    "publisherId": 5
+  },
+  {
+    "title": "Harry Potter and the Sorcerer's Stone",
+    "isbn": "9780590353427",
+    "publicationYear": 1997,
+    "totalCopies": 200,
+    "price": 24.99,
+    "authorId": 2,
+    "categoryId": 19,
+    "publisherId": 14
+  },
+  {
+    "title": "Harry Potter and the Chamber of Secrets",
+    "isbn": "9780439064873",
+    "publicationYear": 1998,
+    "totalCopies": 180,
+    "price": 25.5,
+    "authorId": 2,
+    "categoryId": 19,
+    "publisherId": 14
+  },
+  {
+    "title": "The Shining",
+    "isbn": "9780307743657",
+    "publicationYear": 1977,
+    "totalCopies": 90,
+    "price": 18.99,
+    "authorId": 15,
+    "categoryId": 23,
+    "publisherId": 8
+  },
+  {
+    "title": "It",
+    "isbn": "9781501142970",
+    "publicationYear": 1986,
+    "totalCopies": 85,
+    "price": 22.99,
+    "authorId": 15,
+    "categoryId": 23,
+    "publisherId": 8
+  },
+  {
+    "title": "And Then There Were None",
+    "isbn": "9780062073488",
+    "publicationYear": 1939,
+    "totalCopies": 110,
+    "price": 12.99,
+    "authorId": 14,
+    "categoryId": 21,
+    "publisherId": 7
+  },
+  {
+    "title": "Murder on the Orient Express",
+    "isbn": "9780062073501",
+    "publicationYear": 1934,
+    "totalCopies": 100,
+    "price": 14.5,
+    "authorId": 14,
+    "categoryId": 21,
+    "publisherId": 7
+  },
+  {
+    "title": "The Hobbit",
+    "isbn": "9780544003415",
+    "publicationYear": 1937,
+    "totalCopies": 160,
+    "price": 15.99,
+    "authorId": 31,
+    "categoryId": 19,
+    "publisherId": 24
+  },
+  {
+    "title": "The Fellowship of the Ring",
+    "isbn": "9780544003415",
+    "publicationYear": 1954,
+    "totalCopies": 170,
+    "price": 19.99,
+    "authorId": 31,
+    "categoryId": 19,
+    "publisherId": 24
+  },
+  {
+    "title": "One Hundred Years of Solitude",
+    "isbn": "9780060883287",
+    "publicationYear": 1967,
+    "totalCopies": 80,
+    "price": 16.99,
+    "authorId": 13,
+    "categoryId": 21,
+    "publisherId": 5
+  },
+  {
+    "title": "Love in the Time of Cholera",
+    "isbn": "9780307389732",
+    "publicationYear": 1985,
+    "totalCopies": 75,
+    "price": 17.5,
+    "authorId": 13,
+    "categoryId": 22,
+    "publisherId": 5
+  },
+  {
+    "title": "Kafka on the Shore",
+    "isbn": "9781400079278",
+    "publicationYear": 2002,
+    "totalCopies": 60,
+    "price": 16.0,
+    "authorId": 17,
+    "categoryId": 21,
+    "publisherId": 15
+  },
+  {
+    "title": "Norwegian Wood",
+    "isbn": "9780375704024",
+    "publicationYear": 1987,
+    "totalCopies": 70,
+    "price": 15.99,
+    "authorId": 17,
+    "categoryId": 21,
+    "publisherId": 15
+  },
+  {
+    "title": "Pride and Prejudice",
+    "isbn": "9780141439518",
+    "publicationYear": 1813,
+    "totalCopies": 130,
+    "price": 11.99,
+    "authorId": 18,
+    "categoryId": 22,
+    "publisherId": 5
+  },
+  {
+    "title": "Sense and Sensibility",
+    "isbn": "9780141439662",
+    "publicationYear": 1811,
+    "totalCopies": 100,
+    "price": 12.5,
+    "authorId": 18,
+    "categoryId": 22,
+    "publisherId": 5
+  },
+  {
+    "title": "The Great Gatsby",
+    "isbn": "9780743273565",
+    "publicationYear": 1925,
+    "totalCopies": 140,
+    "price": 13.99,
+    "authorId": 32,
+    "categoryId": 21,
+    "publisherId": 8
+  },
+  {
+    "title": "Tender Is the Night",
+    "isbn": "9780684801544",
+    "publicationYear": 1934,
+    "totalCopies": 50,
+    "price": 14.5,
+    "authorId": 32,
+    "categoryId": 21,
+    "publisherId": 8
+  },
+  {
+    "title": "Crime and Punishment",
+    "isbn": "9780140449136",
+    "publicationYear": 1866,
+    "totalCopies": 65,
+    "price": 18.0,
+    "authorId": 19,
+    "categoryId": 24,
+    "publisherId": 5
+  },
+  {
+    "title": "The Brothers Karamazov",
+    "isbn": "9780374528379",
+    "publicationYear": 1880,
+    "totalCopies": 55,
+    "price": 20.0,
+    "authorId": 19,
+    "categoryId": 24,
+    "publisherId": 5
+  },
+  {
+    "title": "Foundation",
+    "isbn": "9780553293357",
+    "publicationYear": 1951,
+    "totalCopies": 90,
+    "price": 15.5,
+    "authorId": 20,
+    "categoryId": 18,
+    "publisherId": 18
+  },
+  {
+    "title": "I, Robot",
+    "isbn": "9780553294385",
+    "publicationYear": 1950,
+    "totalCopies": 85,
+    "price": 14.99,
+    "authorId": 20,
+    "categoryId": 18,
+    "publisherId": 18
+  },
+  {
+    "title": "The Adventures of Sherlock Holmes",
+    "isbn": "9780451528360",
+    "publicationYear": 1892,
+    "totalCopies": 120,
+    "price": 11.5,
+    "authorId": 21,
+    "categoryId": 21,
+    "publisherId": 5
+  },
+  {
+    "title": "The Hound of the Baskervilles",
+    "isbn": "9780451528018",
+    "publicationYear": 1902,
+    "totalCopies": 100,
+    "price": 10.99,
+    "authorId": 21,
+    "categoryId": 21,
+    "publisherId": 5
+  },
+  {
+    "title": "Mrs Dalloway",
+    "isbn": "9780156628709",
+    "publicationYear": 1925,
+    "totalCopies": 45,
+    "price": 13.5,
+    "authorId": 22,
+    "categoryId": 21,
+    "publisherId": 15
+  },
+  {
+    "title": "To the Lighthouse",
+    "isbn": "9780156907392",
+    "publicationYear": 1927,
+    "totalCopies": 50,
+    "price": 14.0,
+    "authorId": 22,
+    "categoryId": 21,
+    "publisherId": 15
+  },
+  {
+    "title": "The Old Man and the Sea",
+    "isbn": "9780684801223",
+    "publicationYear": 1952,
+    "totalCopies": 110,
+    "price": 12.99,
+    "authorId": 23,
+    "categoryId": 21,
+    "publisherId": 8
+  },
+  {
+    "title": "A Farewell to Arms",
+    "isbn": "9781476727404",
+    "publicationYear": 1929,
+    "totalCopies": 75,
+    "price": 15.5,
+    "authorId": 23,
+    "categoryId": 21,
+    "publisherId": 8
+  },
+  {
+    "title": "American Gods",
+    "isbn": "9780062572233",
+    "publicationYear": 2001,
+    "totalCopies": 85,
+    "price": 18.99,
+    "authorId": 24,
+    "categoryId": 19,
+    "publisherId": 7
+  },
+  {
+    "title": "Coraline",
+    "isbn": "9780380807345",
+    "publicationYear": 2002,
+    "totalCopies": 95,
+    "price": 10.99,
+    "authorId": 24,
+    "categoryId": 19,
+    "publisherId": 7
+  },
+  {
+    "title": "The Handmaid's Tale",
+    "isbn": "9780385490818",
+    "publicationYear": 1985,
+    "totalCopies": 140,
+    "price": 15.99,
+    "authorId": 25,
+    "categoryId": 18,
+    "publisherId": 5
+  },
+  {
+    "title": "The Testaments",
+    "isbn": "9780385543781",
+    "publicationYear": 2019,
+    "totalCopies": 90,
+    "price": 20.0,
+    "authorId": 25,
+    "categoryId": 18,
+    "publisherId": 5
+  },
+  {
+    "title": "The Da Vinci Code",
+    "isbn": "9780307474278",
+    "publicationYear": 2003,
+    "totalCopies": 250,
+    "price": 16.99,
+    "authorId": 26,
+    "categoryId": 20,
+    "publisherId": 25
+  },
+  {
+    "title": "Angels & Demons",
+    "isbn": "9780743493468",
+    "publicationYear": 2000,
+    "totalCopies": 200,
+    "price": 15.99,
+    "authorId": 26,
+    "categoryId": 20,
+    "publisherId": 25
+  },
+  {
+    "title": "Sapiens: A Brief History of Humankind",
+    "isbn": "9780062316097",
+    "publicationYear": 2011,
+    "totalCopies": 300,
+    "price": 22.5,
+    "authorId": 27,
+    "categoryId": 26,
+    "publisherId": 7
+  },
+  {
+    "title": "Homo Deus",
+    "isbn": "9780062464316",
+    "publicationYear": 2015,
+    "totalCopies": 150,
+    "price": 24.0,
+    "authorId": 27,
+    "categoryId": 26,
+    "publisherId": 7
+  },
+  {
+    "title": "Outliers: The Story of Success",
+    "isbn": "9780316017930",
+    "publicationYear": 2008,
+    "totalCopies": 130,
+    "price": 17.99,
+    "authorId": 28,
+    "categoryId": 25,
+    "publisherId": 5
+  },
+  {
+    "title": "The Tipping Point",
+    "isbn": "9780316346627",
+    "publicationYear": 2000,
+    "totalCopies": 115,
+    "price": 16.99,
+    "authorId": 28,
+    "categoryId": 25,
+    "publisherId": 5
+  },
+  {
+    "title": "Beloved",
+    "isbn": "9781400033416",
+    "publicationYear": 1987,
+    "totalCopies": 80,
+    "price": 15.0,
+    "authorId": 29,
+    "categoryId": 21,
+    "publisherId": 15
+  },
+  {
+    "title": "Song of Solomon",
+    "isbn": "9781400033423",
+    "publicationYear": 1977,
+    "totalCopies": 65,
+    "price": 15.5,
+    "authorId": 29,
+    "categoryId": 21,
+    "publisherId": 15
+  },
+  {
+    "title": "The Alchemist",
+    "isbn": "9780062315007",
+    "publicationYear": 1988,
+    "totalCopies": 350,
+    "price": 14.99,
+    "authorId": 30,
+    "categoryId": 19,
+    "publisherId": 7
+  },
+  {
+    "title": "Brida",
+    "isbn": "9780061582943",
+    "publicationYear": 1990,
+    "totalCopies": 80,
+    "price": 13.99,
+    "authorId": 30,
+    "categoryId": 19,
+    "publisherId": 7
+  }
+]

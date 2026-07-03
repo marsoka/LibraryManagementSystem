@@ -9,8 +9,8 @@ public class Borrowing
     public DateTime? ReturnDate { get; set; }
     public BorrowingStatus Status { get; set; }
 
-    public Member Member { get; set; }
-    public Book Book { get; set; }
+    public required Member Member { get; set; }
+    public required Book Book { get; set; }
 
 
 }

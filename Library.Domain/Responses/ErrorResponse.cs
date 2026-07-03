@@ -1,4 +1,4 @@
-namespace Library.BLL.Responses
+namespace Library.Domain.Responses
 {
     public class ErrorResponse
     {

@@ -1,0 +1,107 @@
+[
+  {
+    "name": "Penguin Random House",
+    "address": "1745 Broadway, New York, USA",
+    "phone": "+12127829000"
+  },
+  {
+    "name": "HarperCollins",
+    "address": "195 Broadway, New York, USA",
+    "phone": "+12122077000"
+  },
+  {
+    "name": "Simon & Schuster",
+    "address": "1230 Avenue of the Americas, New York, USA",
+    "phone": "+12126987000"
+  },
+  {
+    "name": "Macmillan Publishers",
+    "address": "120 Broadway, New York, USA",
+    "phone": "+16463075151"
+  },
+  {
+    "name": "Hachette Livre",
+    "address": "58 Rue Jean Bleuzen, Vanves, France",
+    "phone": "+33143923000"
+  },
+  {
+    "name": "Oxford University Press",
+    "address": "Great Clarendon Street, Oxford, UK",
+    "phone": "+441865556767"
+  },
+  {
+    "name": "Cambridge University Press",
+    "address": "University Printing House, Cambridge, UK",
+    "phone": "+441223358331"
+  },
+  {
+    "name": "Pearson Education",
+    "address": "80 Strand, London, UK",
+    "phone": "+442070102000"
+  },
+  {
+    "name": "Scholastic Inc.",
+    "address": "557 Broadway, New York, USA",
+    "phone": "+12123436100"
+  },
+  {
+    "name": "Vintage Books",
+    "address": "20 Vauxhall Bridge Rd, London, UK",
+    "phone": "+442078408400"
+  },
+  {
+    "name": "Bloomsbury Publishing",
+    "address": "50 Bedford Square, London, UK",
+    "phone": "+442076315600"
+  },
+  {
+    "name": "Tor Books",
+    "address": "175 Fifth Avenue, New York, USA",
+    "phone": "+12123880100"
+  },
+  {
+    "name": "Bantam Books",
+    "address": "1745 Broadway, New York, USA",
+    "phone": "+12127829000"
+  },
+  {
+    "name": "W. W. Norton & Company",
+    "address": "500 Fifth Avenue, New York, USA",
+    "phone": "+12123545500"
+  },
+  {
+    "name": "Routledge",
+    "address": "2 Park Square, Milton Park, UK",
+    "phone": "+442070176000"
+  },
+  {
+    "name": "Wiley",
+    "address": "111 River Street, Hoboken, USA",
+    "phone": "+12017486000"
+  },
+  {
+    "name": "McGraw-Hill Education",
+    "address": "1325 Avenue of the Americas, New York, USA",
+    "phone": "+18003383987"
+  },
+  {
+    "name": "Springer Nature",
+    "address": "Heidelberger Platz 3, Berlin, Germany",
+    "phone": "+4930827870"
+  },
+  {
+    "name": "Houghton Mifflin Harcourt",
+    "address": "125 High Street, Boston, USA",
+    "phone": "+16173515000"
+  },
+  {
+    "name": "Crown Publishing Group",
+    "address": "1745 Broadway, New York, USA",
+    "phone": "+12127829000"
+  },
+  {
+    "name": "Faber & Faber",
+    "address": "Bloomsbury House, London, UK",
+    "phone": "+442079273800"
+  }
+]

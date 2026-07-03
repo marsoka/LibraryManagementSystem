@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Science Fiction",
+    "description": "Futuristic concepts, advanced technology, and space exploration."
+  },
+  {
+    "name": "Fantasy",
+    "description": "Magical elements, mythical creatures, and imaginary worlds."
+  },
+  {
+    "name": "Mystery & Thriller",
+    "description": "Suspenseful stories involving crimes and investigations."
+  },
+  {
+    "name": "Historical Fiction",
+    "description": "Fictional stories set against the backdrop of real historical events."
+  },
+  {
+    "name": "Literary Fiction",
+    "description": "Character-driven stories focusing on human condition and style."
+  },
+  {
+    "name": "Romance",
+    "description": "Stories focused on romantic relationships and love."
+  },
+  {
+    "name": "Horror",
+    "description": "Fiction designed to scare, startle, and thrill the reader."
+  },
+  {
+    "name": "Non-Fiction",
+    "description": "Factual literature based on real events and facts."
+  },
+  {
+    "name": "Biography & Autobiography",
+    "description": "Detailed accounts of a person's life."
+  },
+  {
+    "name": "Self-Help",
+    "description": "Books intended to assist individuals in personal improvement."
+  },
+  {
+    "name": "Philosophy",
+    "description": "Exploration of fundamental questions about existence, reason, and values."
+  },
+  {
+    "name": "Psychology",
+    "description": "Study of the human mind, behavior, and mental processes."
+  },
+  {
+    "name": "History",
+    "description": "Chronological records of past events and civilizations."
+  },
+  {
+    "name": "Science & Nature",
+    "description": "Exploration of natural phenomena, physics, biology, and chemistry."
+  },
+  {
+    "name": "Business & Economics",
+    "description": "Insights on finance, management, and corporate strategies."
+  },
+  {
+    "name": "Poetry",
+    "description": "Literary work expressing feelings and ideas with distinct style and rhythm."
+  },
+  {
+    "name": "Drama & Plays",
+    "description": "Theatrical scripts meant to be performed on stage."
+  },
+  {
+    "name": "Children's Books",
+    "description": "Literature designed specifically for young readers."
+  },
+  {
+    "name": "Young Adult (YA)",
+    "description": "Novels targeted at teenagers and young adults."
+  },
+  {
+    "name": "Religion & Spirituality",
+    "description": "Exploration of faith, theology, and spiritual practices."
+  },
+  {
+    "name": "Art & Photography",
+    "description": "Visual arts, history of art, and photographic collections."
+  }
+]

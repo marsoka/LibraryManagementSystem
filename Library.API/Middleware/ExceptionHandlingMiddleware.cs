@@ -1,6 +1,6 @@
 using System.Text.Json;
 using Library.BLL.Exceptions;
-using Library.BLL.Responses;
+using Library.Domain.Responses;
 
 public class ExceptionHandlingMiddleware
 {

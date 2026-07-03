@@ -4,6 +4,8 @@ using Library.BLL.Exceptions.AlreadyAlreadyExistsException;
 using Library.BLL.Exceptions.NotFoundExceptions;
 using Library.BLL.Interfaces;
 using Library.DAL.Repositories.Interfaces;
+using Library.Domain.QueryParameters;
+using Library.Domain.Responses;
 
 public class BookService : IBookService
 {
@@ -67,10 +69,27 @@ public class BookService : IBookService
         return _mapper.Map<BookDetailsDto>(book);
     }
 
-    public async Task<IEnumerable<BookDto>> GetBooksAsync()
+    // public async Task<IEnumerable<BookDto>> GetBooksAsync()
+    // {
+    //     var listOfBook = await _repoBook.GetBooksAsync();
+    //     return _mapper.Map<IEnumerable<BookDto>>(listOfBook);
+    // }
+
+
+    public async Task<PagedResponse<BookDto>> GetBooksAsync(
+        BookQueryParametersDto query)
     {
-        var listOfBook = await _repoBook.GetBooksAsync();
-        return _mapper.Map<IEnumerable<BookDto>>(listOfBook);
+        var bookPagedResponse = await _repoBook.GetBooksAsync(query);
+
+        return new PagedResponse<BookDto>
+        {
+            Data = _mapper.Map<IEnumerable<BookDto>>(bookPagedResponse.Data),
+            PageNumber = query.PageNumber,
+            PageSize = query.PageSize,
+            TotalCount = bookPagedResponse.TotalCount,
+            TotalPages = (int)Math.Ceiling(
+            bookPagedResponse.TotalCount / (double)query.PageSize)
+        };
     }
 
     public async Task UpdateBookAsync(int id, UpdateBookDto dto)

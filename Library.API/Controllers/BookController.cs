@@ -1,6 +1,8 @@
 
 using Library.BLL.DTOs.BookDTO;
 using Library.BLL.Interfaces;
+using Library.Domain.QueryParameters;
+using Library.Domain.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -14,10 +16,17 @@ public class BookController : ControllerBase
         _service = service;
     }
 
+    // [HttpGet]
+    // public async Task<IEnumerable<BookDto>> Get()
+    // {
+    //     return await _service.GetBooksAsync();
+    // }
+
     [HttpGet]
-    public async Task<IEnumerable<BookDto>> Get()
+    public async Task<PagedResponse<BookDto>> GetBooks(
+        [FromQuery] BookQueryParametersDto query)
     {
-        return await _service.GetBooksAsync();
+        return await _service.GetBooksAsync(query);
     }
 
     [HttpGet("{id}")]

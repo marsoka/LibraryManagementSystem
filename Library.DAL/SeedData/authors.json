@@ -1,0 +1,23 @@
+[
+  { "fullName": "George Orwell", "biography": "English novelist, essayist, journalist, and critic known for dystopian fiction.", "dateOfBirth": "1903-06-25", "nationality": "British" },
+  { "fullName": "J.K. Rowling", "biography": "British author and philanthropist, best known for creating the Harry Potter fantasy series.", "dateOfBirth": "1965-07-31", "nationality": "British" },
+  { "fullName": "Stephen King", "biography": "American author of horror, supernatural fiction, suspense, and fantasy novels.", "dateOfBirth": "1947-09-21", "nationality": "American" },
+  { "fullName": "Agatha Christie", "biography": "English writer known for her sixty-six detective novels and the world's best-selling fiction writer.", "dateOfBirth": "1890-09-15", "nationality": "British" },
+  { "fullName": "J.R.R. Tolkien", "biography": "English writer and philologist, widely known as the author of high fantasy works.", "dateOfBirth": "1892-01-03", "nationality": "British" },
+  { "fullName": "Gabriel Garcia Marquez", "biography": "Colombian novelist, considered one of the most significant authors of the 20th century.", "dateOfBirth": "1927-03-06", "nationality": "Colombian" },
+  { "fullName": "Haruki Murakami", "biography": "Japanese writer whose novels and essays have been international bestsellers.", "dateOfBirth": "1949-01-12", "nationality": "Japanese" },
+  { "fullName": "Jane Austen", "biography": "English novelist known primarily for her six major novels interpreting the British landed gentry.", "dateOfBirth": "1775-12-16", "nationality": "British" },
+  { "fullName": "F. Scott Fitzgerald", "biography": "American novelist, essayist, and short story writer of the Jazz Age.", "dateOfBirth": "1896-09-24", "nationality": "American" },
+  { "fullName": "Fyodor Dostoevsky", "biography": "Russian novelist and philosopher, known for exploring human psychology.", "dateOfBirth": "1821-11-11", "nationality": "Russian" },
+  { "fullName": "Isaac Asimov", "biography": "American writer and professor of biochemistry, known for his works of science fiction.", "dateOfBirth": "1920-01-02", "nationality": "American" },
+  { "fullName": "Arthur Conan Doyle", "biography": "British writer and physician, best known for creating the character Sherlock Holmes.", "dateOfBirth": "1859-05-22", "nationality": "British" },
+  { "fullName": "Virginia Woolf", "biography": "English writer, considered one of the most important modernist 20th-century authors.", "dateOfBirth": "1882-01-25", "nationality": "British" },
+  { "fullName": "Ernest Hemingway", "biography": "American novelist and journalist, known for his economical and understated style.", "dateOfBirth": "1899-07-21", "nationality": "American" },
+  { "fullName": "Neil Gaiman", "biography": "English author of short fiction, novels, comic books, graphic novels, and films.", "dateOfBirth": "1960-11-10", "nationality": "British" },
+  { "fullName": "Margaret Atwood", "biography": "Canadian poet, novelist, and environmental activist.", "dateOfBirth": "1939-11-18", "nationality": "Canadian" },
+  { "fullName": "Dan Brown", "biography": "American author known for his thriller novels, including The Da Vinci Code.", "dateOfBirth": "1964-06-22", "nationality": "American" },
+  { "fullName": "Yuval Noah Harari", "biography": "Israeli public intellectual, historian, and professor.", "dateOfBirth": "1976-02-24", "nationality": "Israeli" },
+  { "fullName": "Malcolm Gladwell", "biography": "English-born Canadian journalist, author, and public speaker.", "dateOfBirth": "1963-09-03", "nationality": "Canadian" },
+  { "fullName": "Toni Morrison", "biography": "American novelist, essayist, editor, and professor.", "dateOfBirth": "1931-02-18", "nationality": "American" },
+  { "fullName": "Paulo Coelho", "biography": "Brazilian lyricist and novelist, best known for his novel The Alchemist.", "dateOfBirth": "1947-08-24", "nationality": "Brazilian" }
+]
