@@ -56,5 +56,10 @@ namespace Library.DAL.Repositories.Implementations
         {
             return await _context.Books.AnyAsync(b => b.Id == id);
         }
+
+        public async Task<bool> IsbnIsExistsAsync(string isbn)
+        {
+            return await _context.Books.AnyAsync(b => b.ISBN == isbn);
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace Library.DAL.Repositories.Interfaces
         Task UpdateBookAsync(Book book);
         Task DeleteBookAsync(int id);
         Task<bool> BookIsExistsAsync(int id);
+        Task<bool> IsbnIsExistsAsync(string isbn);
     }
 }

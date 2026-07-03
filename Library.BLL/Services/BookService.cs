@@ -1,5 +1,6 @@
 using AutoMapper;
 using Library.BLL.DTOs.BookDTO;
+using Library.BLL.Exceptions.AlreadyAlreadyExistsException;
 using Library.BLL.Exceptions.NotFoundExceptions;
 using Library.BLL.Interfaces;
 using Library.DAL.Repositories.Interfaces;
@@ -35,6 +36,10 @@ public class BookService : IBookService
         if (!await _repoPublisher.PublisherIsExistsAsync(dto.PublisherId))
         {
             throw new PublisherNotFoundException(dto.PublisherId);
+        }
+        if (await _repoBook.IsbnIsExistsAsync(dto.ISBN))
+        {
+            throw new ISBNAlreadyExistsException(dto.ISBN);
         }
 
         var book = _mapper.Map<Book>(dto);

@@ -40,6 +40,10 @@ public static class ApplicationServiceExtensions
 
         services.AddScoped<IMemberService, MemberService>();
 
+        services.AddScoped<IBorrowingRepository, BorrowingRepository>();
+
+        services.AddScoped<IBorrowingService, BorrowingService>();
+
         services.AddAutoMapper(cfg =>
         {
             cfg.AddMaps(typeof(AuthorProfile).Assembly);
