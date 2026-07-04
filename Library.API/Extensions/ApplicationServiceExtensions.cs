@@ -4,6 +4,7 @@ using Library.BLL.Interfaces;
 using Library.BLL.Services;
 using Library.DAL.Repositories.Implementations;
 using Library.DAL.Repositories.Interfaces;
+using Library.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.API.Extensions;
@@ -44,6 +45,8 @@ public static class ApplicationServiceExtensions
 
         services.AddScoped<IBorrowingService, BorrowingService>();
 
+        services.AddScoped<IAuthService, AuthService>();
+
         services.AddAutoMapper(cfg =>
         {
             cfg.AddMaps(typeof(AuthorProfile).Assembly);
@@ -55,6 +58,7 @@ public static class ApplicationServiceExtensions
 
         services.AddFluentValidationClientsideAdapters();
 
+        services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 
         return services;
     }

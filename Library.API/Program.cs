@@ -5,6 +5,8 @@ using Library.DAL.Repositories.Implementations;
 using Library.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Library.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddApplicationServices(builder.Configuration);
+
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddSwaggerServices();
 
@@ -34,6 +38,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseApplicationMiddlewares();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

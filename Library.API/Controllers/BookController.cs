@@ -3,10 +3,12 @@ using Library.BLL.DTOs.BookDTO;
 using Library.BLL.Interfaces;
 using Library.Domain.QueryParameters;
 using Library.Domain.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class BookController : ControllerBase
 {
     private readonly IBookService _service;
