@@ -1,4 +1,5 @@
 
+using System.Security.Claims;
 using Library.BLL.DTOs.BookDTO;
 using Library.BLL.Interfaces;
 using Library.Domain.QueryParameters;
@@ -28,6 +29,13 @@ public class BookController : ControllerBase
     public async Task<PagedResponse<BookDto>> GetBooks(
         [FromQuery] BookQueryParametersDto query)
     {
+        Console.WriteLine("======================================================");
+        Console.WriteLine(User.Identity?.Name);
+        Console.WriteLine(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        Console.WriteLine(User.FindFirst(ClaimTypes.Name)?.Value);
+        Console.WriteLine(User.FindFirst(ClaimTypes.Email)?.Value);
+        Console.WriteLine(User.FindFirst(ClaimTypes.Role)?.Value);
+        Console.WriteLine("======================================================");
         return await _service.GetBooksAsync(query);
     }
 

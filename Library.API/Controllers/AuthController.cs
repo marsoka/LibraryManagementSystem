@@ -1,29 +1,27 @@
+using System.Security.Claims;
 using Library.BLL.DTOs;
 using Library.BLL.Interfaces;
+using Library.BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("[controller]")]
+[AllowAnonymous]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthService authService,
+        IUserService userService)
     {
         _authService = authService;
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginDto dto)
+    public async Task<IActionResult> Login(LoginDto dto)
     {
-        if (dto.Username != "admin" ||
-            dto.Password != "123456")
-        {
-            return Unauthorized();
-        }
-
-        var token = _authService.GenerateToken(dto.Username);
-
+        var token = await _authService.Login(dto);
         return Ok(token);
     }
 }

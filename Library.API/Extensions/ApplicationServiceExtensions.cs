@@ -47,6 +47,10 @@ public static class ApplicationServiceExtensions
 
         services.AddScoped<IAuthService, AuthService>();
 
+        services.AddScoped<IUserRepository, UserRepository>();
+
+        services.AddScoped<IUserService, UserService>();
+
         services.AddAutoMapper(cfg =>
         {
             cfg.AddMaps(typeof(AuthorProfile).Assembly);

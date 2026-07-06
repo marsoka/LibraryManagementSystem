@@ -1,6 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Library.BLL.DTOs;
+using Library.BLL.Exceptions.StatusCodesExeptions;
 using Library.BLL.Interfaces;
 using Library.Domain;
 using Library.Domain.Responses;
@@ -12,18 +14,32 @@ namespace Library.BLL.Services
     public class AuthService : IAuthService
     {
         private readonly JwtSettings _jwtSettings;
+        private readonly IUserService _userService;
 
-        public AuthService(IOptions<JwtSettings> jwtSettings)
+        public AuthService(IOptions<JwtSettings> jwtSettings,
+            IUserService userService)
         {
             _jwtSettings = jwtSettings.Value;
+            _userService = userService;
         }
 
-        public AuthResponse GenerateToken(string username)
+        public bool CheckUsernameAndPassword(User? user, LoginDto loginDto)
+        {
+            if (user == null)
+                throw new UnauthorizedException();
+
+            return (user.Username == loginDto.Username) && (user.Password == loginDto.Password);
+        }
+
+        public AuthResponse GenerateToken(User user)
         {
 
             var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, username)
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role.ToString())
                 };
 
             var key = new SymmetricSecurityKey(
@@ -49,5 +65,14 @@ namespace Library.BLL.Services
             };
         }
 
+        public async Task<AuthResponse> Login(LoginDto dto)
+        {
+            var user = await _userService.GetUserAsync(dto.Username);
+
+            if (!CheckUsernameAndPassword(user, dto))
+                throw new UnauthorizedException();
+
+            return GenerateToken(user!);
+        }
     }
 }
