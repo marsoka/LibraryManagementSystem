@@ -29,7 +29,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Role)
             .IsRequired()
-            .HasConversion<string>()
+            .HasColumnType("varchar")
             .HasMaxLength(50);
 
     }

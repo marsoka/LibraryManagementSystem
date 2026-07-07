@@ -1,9 +1,12 @@
 
 using Library.BLL.Interfaces;
+using Library.Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian)]
 public class AuthorController : ControllerBase
 {
     private readonly IAuthorService _service;
