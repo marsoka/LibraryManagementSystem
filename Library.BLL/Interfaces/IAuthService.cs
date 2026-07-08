@@ -1,4 +1,5 @@
 using Library.BLL.DTOs;
+using Library.BLL.DTOs.AuthDTO;
 using Library.Domain.Responses;
 
 namespace Library.BLL.Interfaces
@@ -6,7 +7,6 @@ namespace Library.BLL.Interfaces
     public interface IAuthService
     {
         Task<AuthResponse> Login(LoginDto dto);
-        bool CheckUsernameAndPassword(User? user, LoginDto loginDto);
-        AuthResponse GenerateToken(User user);
+        Task RegisterUser(RegisterDto dto);
     }
 }

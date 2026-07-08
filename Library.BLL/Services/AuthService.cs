@@ -1,10 +1,15 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AutoMapper;
 using Library.BLL.DTOs;
+using Library.BLL.DTOs.AuthDTO;
+using Library.BLL.Exceptions.AlreadyAlreadyExistsException;
 using Library.BLL.Exceptions.StatusCodesExeptions;
 using Library.BLL.Interfaces;
+using Library.DAL.Repositories.Interfaces;
 using Library.Domain;
+using Library.Domain.Constants;
 using Library.Domain.Responses;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -14,24 +19,51 @@ namespace Library.BLL.Services
     public class AuthService : IAuthService
     {
         private readonly JwtSettings _jwtSettings;
-        private readonly IUserService _userService;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
         public AuthService(IOptions<JwtSettings> jwtSettings,
-            IUserService userService)
+            IUserRepository userRepository, IMapper mapper)
         {
             _jwtSettings = jwtSettings.Value;
-            _userService = userService;
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
 
-        public bool CheckUsernameAndPassword(User? user, LoginDto loginDto)
+        public async Task<AuthResponse> Login(LoginDto dto)
+        {
+            var user = await _userRepository.GetUserAsync(dto.Username);
+
+            if (!CheckUsernameAndPassword(user, dto))
+                throw new UnauthorizedException();
+
+            return GenerateToken(user!);
+        }
+
+        public async Task RegisterUser(RegisterDto dto)
+        {
+            if (await _userRepository.UsernameIsExistsAsync(dto.Username))
+                throw new UsernameAlreadyExistsException(dto.Username);
+
+            if (await _userRepository.EmailIsExistsAsync(dto.Email))
+                throw new EmailAlreadyExistsException(dto.Email);
+
+            var user = _mapper.Map<User>(dto);
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            user.Role = UserRoles.Admin;
+
+            await _userRepository.CreateUser(user);
+        }
+
+        private bool CheckUsernameAndPassword(User? user, LoginDto loginDto)
         {
             if (user == null)
                 throw new UnauthorizedException();
 
-            return (user.Username == loginDto.Username) && (user.Password == loginDto.Password);
+            return BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash);
         }
 
-        public AuthResponse GenerateToken(User user)
+        private AuthResponse GenerateToken(User user)
         {
 
             var claims = new List<Claim>
@@ -65,14 +97,5 @@ namespace Library.BLL.Services
             };
         }
 
-        public async Task<AuthResponse> Login(LoginDto dto)
-        {
-            var user = await _userService.GetUserAsync(dto.Username);
-
-            if (!CheckUsernameAndPassword(user, dto))
-                throw new UnauthorizedException();
-
-            return GenerateToken(user!);
-        }
     }
 }

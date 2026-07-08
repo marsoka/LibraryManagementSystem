@@ -15,17 +15,16 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Username)
             .IsRequired()
             .HasColumnType("varchar")
-            .HasMaxLength(150);
+            .HasMaxLength(20);
 
         builder.Property(u => u.Email)
             .IsRequired()
             .HasColumnType("varchar")
             .HasMaxLength(150);
 
-        builder.Property(u => u.Password)
+        builder.Property(u => u.PasswordHash)
             .IsRequired()
-            .HasColumnType("varchar")
-            .HasMaxLength(250);
+            .HasColumnType("char(60)");
 
         builder.Property(u => u.Role)
             .IsRequired()

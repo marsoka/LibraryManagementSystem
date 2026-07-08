@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Library.BLL.DTOs;
+using Library.BLL.DTOs.AuthDTO;
 using Library.BLL.Interfaces;
 using Library.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -12,8 +13,7 @@ public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
 
-    public AuthController(IAuthService authService,
-        IUserService userService)
+    public AuthController(IAuthService authService)
     {
         _authService = authService;
     }
@@ -23,5 +23,12 @@ public class AuthController : ControllerBase
     {
         var token = await _authService.Login(dto);
         return Ok(token);
+    }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(RegisterDto dto)
+    {
+        await _authService.RegisterUser(dto);
+        return Created();
     }
 }

@@ -1,4 +1,4 @@
-namespace Library.BLL.DTOs
+namespace Library.BLL.DTOs.AuthDTO
 {
     public class LoginDto
     {
