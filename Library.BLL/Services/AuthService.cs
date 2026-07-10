@@ -13,6 +13,7 @@ using Library.BLL.Interfaces;
 using Library.DAL.Repositories.Interfaces;
 using Library.Domain;
 using Library.Domain.Constants;
+using Library.Domain.Enums;
 using Library.Domain.Responses;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -118,6 +119,7 @@ namespace Library.BLL.Services
             // await _refreshTokenRepository.DeleteRefreshTokenAsync(refreshToken.Id);
             refreshToken.IsRevoked = true;
             refreshToken.RevokedAt = DateTime.UtcNow;
+            refreshToken.RevokedReason = RefreshTokenRevokedReason.Rotation;
             await _refreshTokenRepository.UpdateRefreshTokenAsync(refreshToken);
 
             await _refreshTokenRepository.AddRefreshTokenAsync(
@@ -137,6 +139,39 @@ namespace Library.BLL.Services
                 RefreshToken = newRefreshToken,
                 Expiration = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpireMinutes)
             };
+        }
+
+        public async Task Logout(ClaimsPrincipal user, LogoutRequest logoutRequest)
+        {
+            var refresh = await _refreshTokenRepository.GetRefreshTokenAsync(logoutRequest.RefreshToken);
+
+            // if(!await _userRepository.UserIsExistsAsync(UserId))
+            //     throw new UserNotFoundException(UserId);
+
+            if (refresh == null)
+                throw new RefreshTokenInvalidUnauthorizedException();
+
+            if (refresh.ExpiresAt < DateTime.UtcNow)
+                throw new RefreshTokenExpiredUnauthorizedException();
+
+            if (refresh.IsRevoked)
+                throw new RefreshTokenIsRevokedUnauthorizedException();
+
+
+            var userId = int.Parse(user.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            if (refresh.UserId != userId)
+                throw new UnauthorizedException();
+
+
+            refresh.IsRevoked = true;
+
+            refresh.RevokedAt = DateTime.UtcNow;
+
+            refresh.RevokedReason = RefreshTokenRevokedReason.Logout;
+
+            await _refreshTokenRepository.UpdateRefreshTokenAsync(refresh);
+
         }
 
 

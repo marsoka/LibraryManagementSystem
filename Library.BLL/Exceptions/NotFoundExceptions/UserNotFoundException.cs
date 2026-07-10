@@ -8,5 +8,9 @@ namespace Library.BLL.Exceptions.NotFoundExceptions
             : base($"User with user name {username} was not found.")
         {
         }
+        public UserNotFoundException(int Id)
+            : base($"User with user id {Id} was not found.")
+        {
+        }
     }
 }

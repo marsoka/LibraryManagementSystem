@@ -33,6 +33,11 @@ namespace Library.DAL.Repositories.Implementations
             return await _context.Users.ToListAsync();
         }
 
+        public async Task<bool> UserIsExistsAsync(int id)
+        {
+            return await _context.Users.AnyAsync(u => u.Id == id);
+        }
+
         public async Task<bool> UsernameIsExistsAsync(string username)
         {
             return await _context.Users.AnyAsync(u => u.Username == username);

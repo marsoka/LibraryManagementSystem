@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("[controller]")]
-[AllowAnonymous]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -18,7 +17,8 @@ public class AuthController : ControllerBase
     {
         _authService = authService;
     }
-
+    
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto)
     {
@@ -26,6 +26,7 @@ public class AuthController : ControllerBase
         return Ok(token);
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
@@ -33,10 +34,20 @@ public class AuthController : ControllerBase
         return Created();
     }
 
+    [AllowAnonymous]
     [HttpPost("refresh")]
     public async Task<IActionResult> RefreshToken(RefreshTokenRequest refreshTokenRequest)
     {
         var refresh = await _authService.RefreshTokenAsync(refreshTokenRequest);
         return Ok(refresh);
     }
+
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout(LogoutRequest logoutRequest)
+    {
+        await _authService.Logout(User, logoutRequest);
+        return Ok();
+    }
+
 }

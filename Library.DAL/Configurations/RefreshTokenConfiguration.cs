@@ -9,9 +9,16 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
         builder.Property(r => r.Id)
             .UseIdentityColumn(1, 1);
 
+
+        builder.Property(x => x.RevokedReason)
+            .HasConversion<string>();
+
+
         builder.HasOne(r => r.User)
             .WithMany(u => u.RefreshTokens)
             .HasForeignKey(r => r.UserId);
+
+
 
         builder.HasIndex(r => r.Token)
             .IsUnique();
