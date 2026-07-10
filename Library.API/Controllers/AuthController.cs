@@ -3,6 +3,7 @@ using Library.BLL.DTOs;
 using Library.BLL.DTOs.AuthDTO;
 using Library.BLL.Interfaces;
 using Library.BLL.Services;
+using Library.Domain.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,5 +31,12 @@ public class AuthController : ControllerBase
     {
         await _authService.RegisterUser(dto);
         return Created();
+    }
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> RefreshToken(RefreshTokenRequest refreshTokenRequest)
+    {
+        var refresh = await _authService.RefreshTokenAsync(refreshTokenRequest);
+        return Ok(refresh);
     }
 }

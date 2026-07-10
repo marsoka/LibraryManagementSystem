@@ -49,6 +49,15 @@ public static class ApplicationServiceExtensions
 
         services.AddScoped<IUserRepository, UserRepository>();
 
+        // services.AddScoped<JwtSettings>();
+
+        services.AddScoped<IJwtService, JwtService>();
+
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
+        services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+
+
         services.AddAutoMapper(cfg =>
         {
             cfg.AddMaps(typeof(AuthorProfile).Assembly);

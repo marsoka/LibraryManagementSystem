@@ -8,5 +8,6 @@ namespace Library.BLL.Interfaces
     {
         Task<AuthResponse> Login(LoginDto dto);
         Task RegisterUser(RegisterDto dto);
+        Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest);
     }
 }

@@ -5,7 +5,10 @@ using AutoMapper;
 using Library.BLL.DTOs;
 using Library.BLL.DTOs.AuthDTO;
 using Library.BLL.Exceptions.AlreadyAlreadyExistsException;
+using Library.BLL.Exceptions.BusinessRuleExceptions;
+using Library.BLL.Exceptions.NotFoundExceptions;
 using Library.BLL.Exceptions.StatusCodesExeptions;
+using Library.BLL.Exceptions.UnauthorizedExceptions;
 using Library.BLL.Interfaces;
 using Library.DAL.Repositories.Interfaces;
 using Library.Domain;
@@ -19,13 +22,18 @@ namespace Library.BLL.Services
     public class AuthService : IAuthService
     {
         private readonly JwtSettings _jwtSettings;
+        private readonly IJwtService _jwtService;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public AuthService(IOptions<JwtSettings> jwtSettings,
+        public AuthService(IOptions<JwtSettings> jwtSettings, IJwtService jwtService,
+            IRefreshTokenRepository refreshTokenRepository,
             IUserRepository userRepository, IMapper mapper)
         {
             _jwtSettings = jwtSettings.Value;
+            _jwtService = jwtService;
+            _refreshTokenRepository = refreshTokenRepository;
             _userRepository = userRepository;
             _mapper = mapper;
         }
@@ -37,7 +45,7 @@ namespace Library.BLL.Services
             if (!CheckUsernameAndPassword(user, dto))
                 throw new UnauthorizedException();
 
-            return GenerateToken(user!);
+            return await GenerateToken(user!);
         }
 
         public async Task RegisterUser(RegisterDto dto)
@@ -63,39 +71,71 @@ namespace Library.BLL.Services
             return BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash);
         }
 
-        private AuthResponse GenerateToken(User user)
+        private async Task<AuthResponse> GenerateToken(User user)
         {
+            string accessToken = _jwtService.GenerateAccessToken(user);
+            string refreshToken = _jwtService.GenerateRefreshToken();
 
-            var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role.ToString())
-                };
+            var Refresh = new RefreshToken
+            {
+                Token = refreshToken,
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
+                CreatedAt = DateTime.UtcNow,
+                IsRevoked = false,
+                UserId = user.Id
+            };
 
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_jwtSettings.Key!));
-
-            var credentials = new SigningCredentials(
-                key,
-                SecurityAlgorithms.HmacSha256);
-
-            var expiration = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpireMinutes);
-
-            var token = new JwtSecurityToken(
-                issuer: _jwtSettings.Issuer,
-                audience: _jwtSettings.Audience,
-                claims: claims,
-                expires: expiration,
-                signingCredentials: credentials);
+            await _refreshTokenRepository.AddRefreshTokenAsync(Refresh);
 
             return new AuthResponse
             {
-                Token = new JwtSecurityTokenHandler().WriteToken(token),
-                Expiration = expiration
+                Token = accessToken,
+                RefreshToken = refreshToken,
+                Expiration = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpireMinutes)
             };
         }
+
+
+        public async Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest)
+        {
+            var refreshToken = await _refreshTokenRepository
+                .GetRefreshTokenAsync(refreshTokenRequest.RefreshToken);
+
+            if (refreshToken == null)
+                throw new RefreshTokenInvalidUnauthorizedException();
+
+            if (refreshToken.ExpiresAt < DateTime.UtcNow)
+                throw new RefreshTokenExpiredUnauthorizedException();
+
+            if (refreshToken.IsRevoked)
+                throw new RefreshTokenIsRevokedUnauthorizedException();
+
+            var user = refreshToken.User;
+
+            var accessToken = _jwtService.GenerateAccessToken(user);
+            var newRefreshToken = _jwtService.GenerateRefreshToken();
+
+            await _refreshTokenRepository.DeleteRefreshTokenAsync(refreshToken.Id);
+
+            await _refreshTokenRepository.AddRefreshTokenAsync(
+                new RefreshToken
+                {
+                    Token = newRefreshToken,
+                    CreatedAt = DateTime.UtcNow,
+                    ExpiresAt = DateTime.UtcNow.AddDays(7),
+                    IsRevoked = false,
+                    UserId = user.Id
+                }
+            );
+
+            return new AuthResponse
+            {
+                Token = accessToken,
+                RefreshToken = newRefreshToken,
+                Expiration = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpireMinutes)
+            };
+        }
+
 
     }
 }
