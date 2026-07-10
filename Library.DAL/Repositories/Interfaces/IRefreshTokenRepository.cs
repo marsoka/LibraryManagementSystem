@@ -7,5 +7,6 @@ namespace Library.DAL.Repositories.Interfaces
         Task<RefreshToken?> GetRefreshTokenAsync(string token);
         Task AddRefreshTokenAsync(RefreshToken refreshToken);
         Task DeleteRefreshTokenAsync(int id);
+        Task UpdateRefreshTokenAsync(RefreshToken refreshToken);
     }
 }

@@ -43,5 +43,11 @@ namespace Library.DAL.Repositories.Implementations
         {
             return await _context.RefreshTokens.ToListAsync();
         }
+
+        public async Task UpdateRefreshTokenAsync(RefreshToken refreshToken)
+        {
+            _context.RefreshTokens.Update(refreshToken);
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -115,7 +115,10 @@ namespace Library.BLL.Services
             var accessToken = _jwtService.GenerateAccessToken(user);
             var newRefreshToken = _jwtService.GenerateRefreshToken();
 
-            await _refreshTokenRepository.DeleteRefreshTokenAsync(refreshToken.Id);
+            // await _refreshTokenRepository.DeleteRefreshTokenAsync(refreshToken.Id);
+            refreshToken.IsRevoked = true;
+            refreshToken.RevokedAt = DateTime.UtcNow;
+            await _refreshTokenRepository.UpdateRefreshTokenAsync(refreshToken);
 
             await _refreshTokenRepository.AddRefreshTokenAsync(
                 new RefreshToken
