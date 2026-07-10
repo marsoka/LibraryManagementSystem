@@ -30,7 +30,7 @@ namespace Library.BLL.Services
                 throw new PhoneAlreadyExistsException(member.Phone);
             }
 
-            member.RegistrationDate = DateOnly.FromDateTime(DateTime.Now);
+            member.RegistrationDate = DateOnly.FromDateTime(DateTime.UtcNow);
             await _repo.AddMemberAsync(member);
         }
 

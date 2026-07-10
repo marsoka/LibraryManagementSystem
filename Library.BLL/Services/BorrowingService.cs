@@ -52,8 +52,8 @@ namespace Library.BLL.Services
 
 
             var borrowing = _mapper.Map<Borrowing>(dto);
-            borrowing.BorrowDate = DateTime.Now;
-            borrowing.DueDate = DateTime.Now.AddDays(14);
+            borrowing.BorrowDate = DateTime.UtcNow;
+            borrowing.DueDate = DateTime.UtcNow.AddDays(14);
             borrowing.ReturnDate = null;
             borrowing.Status = BorrowingStatus.Borrowed;
 
@@ -101,7 +101,7 @@ namespace Library.BLL.Services
             if (borrowed.Status == BorrowingStatus.Returned)
                 throw new BookAlreadyReturned(id);
 
-            borrowed.ReturnDate = DateTime.Now;
+            borrowed.ReturnDate = DateTime.UtcNow;
             borrowed.Status = BorrowingStatus.Returned;
 
             borrowed.Book.AvailableCopies++;

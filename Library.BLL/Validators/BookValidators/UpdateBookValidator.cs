@@ -21,7 +21,7 @@ namespace Library.BLL.Validators.BookValidators
                     .WithMessage("ISBN must contain exactly 13 digits.");
 
             RuleFor(x => x.PublicationYear)
-                .InclusiveBetween(1500, DateTime.Now.Year)
+                .InclusiveBetween(1500, DateTime.UtcNow.Year)
                     .WithMessage("Publication year must be in the past.");
 
             RuleFor(x => x.TotalCopies)
