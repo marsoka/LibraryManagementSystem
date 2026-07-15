@@ -9,33 +9,36 @@ namespace Library.BLL.Services
 {
     public class PublisherService : IPublisherService
     {
-        private readonly IPublisherRepository _repo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public PublisherService(IPublisherRepository repo, IMapper mapper)
+        public PublisherService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _repo = repo;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task CreatePublisherAsync(CreatePublisherDto dto)
         {
             var publisher = _mapper.Map<Publisher>(dto);
-            await _repo.AddPublisherAsync(publisher);
+            await _unitOfWork.Publishers.AddAsync(publisher);
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task DeletePublisherAsync(int id)
         {
-            if (!await _repo.PublisherIsExistsAsync(id))
+            var publisher = await _unitOfWork.Publishers.GetByIdAsync(id);
+            if (publisher == null)
             {
                 throw new PublisherNotFoundException(id);
             }
-            await _repo.DeletePublisherAsync(id);
+            await _unitOfWork.Publishers.DeleteAsync(publisher);
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task<PublisherDto?> GetPublisherAsync(int id)
         {
-            var publisher = await _repo.GetPublisherAsync(id);
+            var publisher = await _unitOfWork.Publishers.GetByIdAsync(id);
             if (publisher == null)
             {
                 throw new PublisherNotFoundException(id);
@@ -45,20 +48,21 @@ namespace Library.BLL.Services
 
         public async Task<IEnumerable<PublisherDto>> GetPublishersAsync()
         {
-            var listOfPublishers = await _repo.GetPublishersAsync();
+            var listOfPublishers = await _unitOfWork.Publishers.GetAllAsync();
             return _mapper.Map<IEnumerable<PublisherDto>>(listOfPublishers);
         }
 
         public async Task UpdatePublisherAsync(int id, UpdatePublisherDto dto)
         {
-            var publisher = await _repo.GetPublisherAsync(id);
+            var publisher = await _unitOfWork.Publishers.GetByIdAsync(id);
             if (publisher == null)
             {
                 throw new PublisherNotFoundException(id);
             }
 
             _mapper.Map(dto, publisher);
-            await _repo.UpdatePublisherAsync(publisher);
+            await _unitOfWork.Publishers.UpdateAsync(publisher);
+            await _unitOfWork.CompleteAsync();
         }
     }
 }

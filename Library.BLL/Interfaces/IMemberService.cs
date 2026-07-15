@@ -12,6 +12,6 @@ namespace Library.BLL.Interfaces
 
         Task UpdateMemberAsync(int id, UpdateMemberDto dto);
 
-        Task DeleteAuthorAsync(int id);
+        Task DeleteMemberAsync(int id);
     }
 }

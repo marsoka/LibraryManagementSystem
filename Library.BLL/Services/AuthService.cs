@@ -24,24 +24,21 @@ namespace Library.BLL.Services
     {
         private readonly JwtSettings _jwtSettings;
         private readonly IJwtService _jwtService;
-        private readonly IRefreshTokenRepository _refreshTokenRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
         public AuthService(IOptions<JwtSettings> jwtSettings, IJwtService jwtService,
-            IRefreshTokenRepository refreshTokenRepository,
-            IUserRepository userRepository, IMapper mapper)
+            IUnitOfWork unitOfWork, IMapper mapper)
         {
             _jwtSettings = jwtSettings.Value;
             _jwtService = jwtService;
-            _refreshTokenRepository = refreshTokenRepository;
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<AuthResponse> Login(LoginDto dto)
         {
-            var user = await _userRepository.GetUserAsync(dto.Username);
+            var user = await _unitOfWork.Users.GetByExpressionAsync(u => u.Username == dto.Username);
 
             if (!CheckUsernameAndPassword(user, dto))
                 throw new UnauthorizedException();
@@ -51,17 +48,18 @@ namespace Library.BLL.Services
 
         public async Task RegisterUser(RegisterDto dto)
         {
-            if (await _userRepository.UsernameIsExistsAsync(dto.Username))
+            if (await _unitOfWork.Users.IsExistsAsync(u => u.Username == dto.Username))
                 throw new UsernameAlreadyExistsException(dto.Username);
 
-            if (await _userRepository.EmailIsExistsAsync(dto.Email))
+            if (await _unitOfWork.Users.IsExistsAsync(u => u.Email == dto.Email))
                 throw new EmailAlreadyExistsException(dto.Email);
 
             var user = _mapper.Map<User>(dto);
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
             user.Role = UserRoles.Admin;
 
-            await _userRepository.CreateUser(user);
+            await _unitOfWork.Users.AddAsync(user);
+            await _unitOfWork.CompleteAsync();
         }
 
         private bool CheckUsernameAndPassword(User? user, LoginDto loginDto)
@@ -86,7 +84,8 @@ namespace Library.BLL.Services
                 UserId = user.Id
             };
 
-            await _refreshTokenRepository.AddRefreshTokenAsync(Refresh);
+            await _unitOfWork.RefreshTokens.AddAsync(Refresh);
+            await _unitOfWork.CompleteAsync();
 
             return new AuthResponse
             {
@@ -99,8 +98,8 @@ namespace Library.BLL.Services
 
         public async Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest)
         {
-            var refreshToken = await _refreshTokenRepository
-                .GetRefreshTokenAsync(refreshTokenRequest.RefreshToken);
+            var refreshToken = await _unitOfWork.RefreshTokens
+                .GetByExpressionAsync(rt => rt.Token == refreshTokenRequest.RefreshToken, ["User"]);
 
             if (refreshToken == null)
                 throw new RefreshTokenInvalidUnauthorizedException();
@@ -120,9 +119,9 @@ namespace Library.BLL.Services
             refreshToken.IsRevoked = true;
             refreshToken.RevokedAt = DateTime.UtcNow;
             refreshToken.RevokedReason = RefreshTokenRevokedReason.Rotation;
-            await _refreshTokenRepository.UpdateRefreshTokenAsync(refreshToken);
+            await _unitOfWork.RefreshTokens.UpdateAsync(refreshToken);
 
-            await _refreshTokenRepository.AddRefreshTokenAsync(
+            await _unitOfWork.RefreshTokens.AddAsync(
                 new RefreshToken
                 {
                     Token = newRefreshToken,
@@ -132,6 +131,8 @@ namespace Library.BLL.Services
                     UserId = user.Id
                 }
             );
+
+            await _unitOfWork.CompleteAsync();
 
             return new AuthResponse
             {
@@ -143,7 +144,8 @@ namespace Library.BLL.Services
 
         public async Task Logout(ClaimsPrincipal user, LogoutRequest logoutRequest)
         {
-            var refresh = await _refreshTokenRepository.GetRefreshTokenAsync(logoutRequest.RefreshToken);
+            var refresh = await _unitOfWork.RefreshTokens
+                .GetByExpressionAsync(rt => rt.Token == logoutRequest.RefreshToken);
 
             // if(!await _userRepository.UserIsExistsAsync(UserId))
             //     throw new UserNotFoundException(UserId);
@@ -170,7 +172,8 @@ namespace Library.BLL.Services
 
             refresh.RevokedReason = RefreshTokenRevokedReason.Logout;
 
-            await _refreshTokenRepository.UpdateRefreshTokenAsync(refresh);
+            await _unitOfWork.RefreshTokens.UpdateAsync(refresh);
+            await _unitOfWork.CompleteAsync();
 
         }
 

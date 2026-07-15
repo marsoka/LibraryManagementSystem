@@ -55,7 +55,8 @@ public static class ApplicationServiceExtensions
 
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
-        services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+        // services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
         services.AddAutoMapper(cfg =>

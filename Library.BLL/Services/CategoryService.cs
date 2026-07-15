@@ -8,39 +8,44 @@ namespace Library.BLL.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly ICategoryRepository _repo;
+        // private readonly ICategoryRepository _repo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CategoryService(ICategoryRepository repo, IMapper mapper)
+        public CategoryService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _repo = repo;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task CreateCategoryAsync(CreateCategoryDto dto)
         {
             var category = _mapper.Map<Category>(dto);
-            await _repo.AddCategoryAsync(category);
+            await _unitOfWork.Categories.AddAsync(category);
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task DeleteCategoryAsync(int id)
         {
-            if (!await _repo.CategoryIsExistsAsync(id))
+            var category = await _unitOfWork.Categories.GetByIdAsync(id);
+            // if (!await _unitOfWork.Categories.IsExistsAsync(c => c.Id == id))
+            if (category == null)
             {
                 throw new CategoryNotFoundException(id);
             }
-            await _repo.DeleteCategoryAsync(id);
+            await _unitOfWork.Categories.DeleteAsync(category);
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task<IEnumerable<CategoryDto>> GetCategoriesAsync()
         {
-            var listOfCategory = await _repo.GetCategoriesAsync();
+            var listOfCategory = await _unitOfWork.Categories.GetAllAsync();
             return _mapper.Map<IEnumerable<CategoryDto>>(listOfCategory);
         }
 
         public async Task<CategoryDto?> GetCategoryAsync(int id)
         {
-            var category = await _repo.GetCategoryAsync(id);
+            var category = await _unitOfWork.Categories.GetByIdAsync(id);
             if (category == null)
             {
                 throw new CategoryNotFoundException(id);
@@ -50,14 +55,15 @@ namespace Library.BLL.Services
 
         public async Task UpdateCategoryAsync(int id, UpdateCategoryDto dto)
         {
-            var category = await _repo.GetCategoryAsync(id);
+            var category = await _unitOfWork.Categories.GetByIdAsync(id);
             if (category == null)
             {
                 throw new CategoryNotFoundException(id);
             }
 
             _mapper.Map(dto, category);
-            await _repo.UpdateCategoryAsync(category);
+            await _unitOfWork.Categories.UpdateAsync(category);
+            await _unitOfWork.CompleteAsync();
         }
     }
 }

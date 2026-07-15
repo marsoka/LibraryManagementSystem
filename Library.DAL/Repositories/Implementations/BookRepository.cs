@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Library.DAL.Repositories.Implementations
 {
-    public class BookRepository : IBookRepository
+    public class BookRepository : BaseRepository<Book>, IBookRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public BookRepository(ApplicationDbContext context)
+        public BookRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public async Task<PagedResponse<Book>> GetBooksAsync(
+        public async Task<PagedResponse<Book>> SearchBooksAsync(
             BookQueryParametersDto query)
         {
             IQueryable<Book> books = _context.Books
@@ -100,45 +100,5 @@ namespace Library.DAL.Repositories.Implementations
             };
         }
 
-        public async Task<Book?> GetBookAsync(int id)
-        {
-            return await _context.Books
-                .Include(b => b.Author)
-                .Include(b => b.Category)
-                .Include(b => b.Publisher)
-                .FirstOrDefaultAsync(b => b.Id == id);
-        }
-
-        public async Task AddBookAsync(Book book)
-        {
-            await _context.Books.AddAsync(book);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateBookAsync(Book book)
-        {
-            _context.Books.Update(book);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteBookAsync(int id)
-        {
-            var book = await _context.Books.FindAsync(id);
-            if (book != null)
-            {
-                _context.Books.Remove(book);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task<bool> BookIsExistsAsync(int id)
-        {
-            return await _context.Books.AnyAsync(b => b.Id == id);
-        }
-
-        public async Task<bool> IsbnIsExistsAsync(string isbn)
-        {
-            return await _context.Books.AnyAsync(b => b.ISBN == isbn);
-        }
     }
 }

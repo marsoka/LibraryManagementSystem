@@ -12,29 +12,23 @@ namespace Library.BLL.Services
 {
     public class BorrowingService : IBorrowingService
     {
-        private readonly IBorrowingRepository _repo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        private readonly IBookRepository _repoBook;
-        private readonly IMemberRepository _repoMember;
-
-        public BorrowingService(IBorrowingRepository repo, IMapper mapper,
-                    IBookRepository bookRepository, IMemberRepository memberRepository)
+        public BorrowingService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _repo = repo;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _repoBook = bookRepository;
-            _repoMember = memberRepository;
         }
 
         public async Task BorrowingBookAsync(CreateBorrowingDto dto)
         {
-            Member? member = await _repoMember.GetMemberAsync(dto.MemberId);
+            Member? member = await _unitOfWork.Members.GetByIdAsync(dto.MemberId);
             if (member == null)
                 throw new MemberNotFoundException(dto.MemberId);
 
 
-            Book? book = await _repoBook.GetBookAsync(dto.BookId);
+            Book? book = await _unitOfWork.Books.GetByIdAsync(dto.BookId);
             if (book == null)
                 throw new BookNotFoundException(dto.BookId);
 
@@ -42,9 +36,9 @@ namespace Library.BLL.Services
                 throw new BookNotAvailableException(book.Id);
 
             var alreadyBorrowed =
-                    await _repo.HasActiveBorrowingAsync(
-                        dto.MemberId,
-                        dto.BookId);
+                    await _unitOfWork.Borrowings.IsExistsAsync(b => b.MemberId == dto.MemberId
+                    && b.BookId == dto.BookId
+                    && b.Status == BorrowingStatus.Borrowed);
 
             if (alreadyBorrowed)
                 throw new BusinessRuleException("Member already borrowed this book.");
@@ -59,8 +53,9 @@ namespace Library.BLL.Services
 
             book.AvailableCopies--;
 
-            await _repo.AddBorrowingAsync(borrowing);
-            await _repoBook.UpdateBookAsync(book);
+            await _unitOfWork.Borrowings.AddAsync(borrowing);
+            await _unitOfWork.Books.UpdateAsync(book);
+            await _unitOfWork.CompleteAsync();
 
         }
 
@@ -78,7 +73,7 @@ namespace Library.BLL.Services
 
         public async Task<BorrowingDetailsDto?> GetBorrowingAsync(int id)
         {
-            var borrowing = await _repo.GetBorrowingAsync(id);
+            var borrowing = await _unitOfWork.Borrowings.GetByIdAsync(id);
             if (borrowing == null)
             {
                 throw new BorrowingNotFoundException(id);
@@ -88,13 +83,13 @@ namespace Library.BLL.Services
 
         public async Task<IEnumerable<BorrowingDto>> GetBorrowingsAsync()
         {
-            var listOfBorrowing = await _repo.GetBorrowingsAsync();
+            var listOfBorrowing = await _unitOfWork.Borrowings.GetAllAsync();
             return _mapper.Map<IEnumerable<BorrowingDto>>(listOfBorrowing);
         }
 
         public async Task ReturnBorrowedBook(int id)
         {
-            var borrowed = await _repo.GetBorrowingAsync(id);
+            var borrowed = await _unitOfWork.Borrowings.GetByIdAsync(id);
             if (borrowed == null)
                 throw new BorrowingNotFoundException(id);
 
@@ -106,7 +101,8 @@ namespace Library.BLL.Services
 
             borrowed.Book.AvailableCopies++;
 
-            await _repo.UpdateBorrowingAsync(borrowed);
+            await _unitOfWork.Borrowings.UpdateAsync(borrowed);
+            await _unitOfWork.CompleteAsync();
 
         }
     }

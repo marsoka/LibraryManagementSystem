@@ -9,50 +9,53 @@ namespace Library.BLL.Services
 {
     public class MemberService : IMemberService
     {
-        private readonly IMemberRepository _repo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public MemberService(IMemberRepository repo, IMapper mapper)
+        public MemberService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _repo = repo;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task CreateMemberAsync(CreateMemberDto dto)
         {
             var member = _mapper.Map<Member>(dto);
-            if (await _repo.EmailIsExistsAsync(member.Email))
+            if (await _unitOfWork.Members.IsExistsAsync(m => m.Email == member.Email))
             {
                 throw new EmailAlreadyExistsException(member.Email);
             }
-            if (await _repo.PhoneIsExistsAsync(member.Phone))
+            if (await _unitOfWork.Members.IsExistsAsync(m => m.Phone == member.Phone))
             {
                 throw new PhoneAlreadyExistsException(member.Phone);
             }
 
             member.RegistrationDate = DateOnly.FromDateTime(DateTime.UtcNow);
-            await _repo.AddMemberAsync(member);
+            await _unitOfWork.Members.AddAsync(member);
+            await _unitOfWork.CompleteAsync();
         }
 
-        public async Task DeleteAuthorAsync(int id)
+        public async Task DeleteMemberAsync(int id)
         {
-            if (!await _repo.MemberIsExistsAsync(id))
+            var member = await _unitOfWork.Members.GetByIdAsync(id);
+            if (member == null)
             {
                 throw new MemberNotFoundException(id);
             }
 
-            await _repo.DeleteMemberAsync(id);
+            await _unitOfWork.Members.DeleteAsync(member);
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task<IEnumerable<MemberDto>> GetMembersAsync()
         {
-            var listOfMember = await _repo.GetMembersAsync();
+            var listOfMember = await _unitOfWork.Members.GetAllAsync();
             return _mapper.Map<IEnumerable<MemberDto>>(listOfMember);
         }
 
         public async Task<MemberDto?> GetMemberAsync(int id)
         {
-            var member = await _repo.GetMemberAsync(id);
+            var member = await _unitOfWork.Members.GetByIdAsync(id);
             if (member == null)
             {
                 throw new MemberNotFoundException(id);
@@ -63,14 +66,15 @@ namespace Library.BLL.Services
 
         public async Task UpdateMemberAsync(int id, UpdateMemberDto dto)
         {
-            var member = await _repo.GetMemberAsync(id);
+            var member = await _unitOfWork.Members.GetByIdAsync(id);
             if (member == null)
             {
                 throw new MemberNotFoundException(id);
             }
 
             _mapper.Map(dto, member);
-            await _repo.UpdateMemberAsync(member);
+            await _unitOfWork.Members.UpdateAsync(member);
+            await _unitOfWork.CompleteAsync();
         }
     }
 }

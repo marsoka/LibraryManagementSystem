@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize(Roles = UserRoles.Admin +","+ UserRoles.Librarian)]
+[Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian)]
 public class MemberController : ControllerBase
 {
     private readonly IMemberService _service;
@@ -43,6 +43,6 @@ public class MemberController : ControllerBase
     [HttpDelete("{id}")]
     public async Task DeleteMember(int id)
     {
-        await _service.DeleteAuthorAsync(id);
+        await _service.DeleteMemberAsync(id);
     }
 }
