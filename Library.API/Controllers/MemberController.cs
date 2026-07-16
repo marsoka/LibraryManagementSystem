@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian)]
+// [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian)]
 public class MemberController : ControllerBase
 {
     private readonly IMemberService _service;

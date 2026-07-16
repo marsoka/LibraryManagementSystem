@@ -73,7 +73,7 @@ namespace Library.BLL.Services
 
         public async Task<BorrowingDetailsDto?> GetBorrowingAsync(int id)
         {
-            var borrowing = await _unitOfWork.Borrowings.GetByIdAsync(id);
+            var borrowing = await _unitOfWork.Borrowings.Find(b => b.Id == id, ["Member", "Book"]);
             if (borrowing == null)
             {
                 throw new BorrowingNotFoundException(id);
@@ -83,13 +83,13 @@ namespace Library.BLL.Services
 
         public async Task<IEnumerable<BorrowingDto>> GetBorrowingsAsync()
         {
-            var listOfBorrowing = await _unitOfWork.Borrowings.GetAllAsync();
+            var listOfBorrowing = await _unitOfWork.Borrowings.GetAllAsync(["Member", "Book"]);
             return _mapper.Map<IEnumerable<BorrowingDto>>(listOfBorrowing);
         }
 
         public async Task ReturnBorrowedBook(int id)
         {
-            var borrowed = await _unitOfWork.Borrowings.GetByIdAsync(id);
+            var borrowed = await _unitOfWork.Borrowings.Find(b => b.Id == id, ["Book"]);
             if (borrowed == null)
                 throw new BorrowingNotFoundException(id);
 

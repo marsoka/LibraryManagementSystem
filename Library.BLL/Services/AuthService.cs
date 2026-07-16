@@ -38,7 +38,7 @@ namespace Library.BLL.Services
 
         public async Task<AuthResponse> Login(LoginDto dto)
         {
-            var user = await _unitOfWork.Users.GetByExpressionAsync(u => u.Username == dto.Username);
+            var user = await _unitOfWork.Users.Find(u => u.Username == dto.Username);
 
             if (!CheckUsernameAndPassword(user, dto))
                 throw new UnauthorizedException();
@@ -99,7 +99,7 @@ namespace Library.BLL.Services
         public async Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest)
         {
             var refreshToken = await _unitOfWork.RefreshTokens
-                .GetByExpressionAsync(rt => rt.Token == refreshTokenRequest.RefreshToken, ["User"]);
+                .Find(rt => rt.Token == refreshTokenRequest.RefreshToken, ["User"]);
 
             if (refreshToken == null)
                 throw new RefreshTokenInvalidUnauthorizedException();
@@ -145,7 +145,7 @@ namespace Library.BLL.Services
         public async Task Logout(ClaimsPrincipal user, LogoutRequest logoutRequest)
         {
             var refresh = await _unitOfWork.RefreshTokens
-                .GetByExpressionAsync(rt => rt.Token == logoutRequest.RefreshToken);
+                .Find(rt => rt.Token == logoutRequest.RefreshToken);
 
             // if(!await _userRepository.UserIsExistsAsync(UserId))
             //     throw new UserNotFoundException(UserId);

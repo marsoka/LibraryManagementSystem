@@ -24,12 +24,22 @@ namespace Library.DAL.Repositories.Implementations
             _context.Set<T>().Remove(entity);
         }
 
-        public async Task<IEnumerable<T>?> GetAllAsync()
+        public async Task<IEnumerable<T>?> GetAllAsync(string[] includes = null)
         {
-            return await _context.Set<T>().ToListAsync();
+            IQueryable<T> query = _context.Set<T>();
+            if (includes != null)
+                foreach (string include in includes)
+                    query = query.Include(include);
+
+            return await query.ToListAsync();
         }
 
-        public async Task<T?> GetByExpressionAsync(Expression<Func<T, bool>> expression, string[] includes = null)
+        public async Task<T?> Find(Expression<Func<T, bool>> expression)
+        {
+            return await _context.Set<T>().FirstOrDefaultAsync(expression);
+        }
+
+        public async Task<T?> Find(Expression<Func<T, bool>> expression, string[] includes = null)
         {
             IQueryable<T> query = _context.Set<T>();
             if (includes != null)
@@ -53,5 +63,6 @@ namespace Library.DAL.Repositories.Implementations
         {
             _context.Set<T>().Update(entity);
         }
+
     }
 }

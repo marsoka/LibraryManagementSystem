@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize(Roles = UserRoles.Admin +","+ UserRoles.Librarian)]
+// [Authorize(Roles = UserRoles.Admin +","+ UserRoles.Librarian)]
 public class PublisherController : ControllerBase
 {
     private readonly IPublisherService _service;

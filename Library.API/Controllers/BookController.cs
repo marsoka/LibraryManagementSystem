@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
+// [Authorize]
 public class BookController : ControllerBase
 {
     private readonly IBookService _service;
@@ -26,7 +26,7 @@ public class BookController : ControllerBase
     //     return await _service.GetBooksAsync();
     // }
 
-    [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian + "," + UserRoles.Member)]
+    // [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian + "," + UserRoles.Member)]
     [HttpGet]
     public async Task<PagedResponse<BookDto>> GetBooks(
         [FromQuery] BookQueryParametersDto query)
@@ -41,28 +41,28 @@ public class BookController : ControllerBase
         return await _service.GetBooksAsync(query);
     }
 
-    [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian)]
+    // [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian)]
     [HttpGet("{id}")]
     public async Task<BookDetailsDto> GetById(int id)
     {
         return await _service.GetBookAsync(id);
     }
 
-    [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian)]
+    // [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian)]
     [HttpPost]
     public async Task CreateBook(CreateBookDto createBookDto)
     {
         await _service.CreateBookAsync(createBookDto);
     }
 
-    [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian)]
+    // [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian)]
     [HttpPut("{id}")]
     public async Task UpdateBook(int id, UpdateBookDto updateBookDto)
     {
         await _service.UpdateBookAsync(id, updateBookDto);
     }
 
-    [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian)]
+    // [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Librarian)]
     [HttpDelete("{id}")]
     public async Task DeleteBook(int id)
     {
