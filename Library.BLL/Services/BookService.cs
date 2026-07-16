@@ -56,7 +56,7 @@ public class BookService : IBookService
 
     public async Task<BookDetailsDto?> GetBookAsync(int id)
     {
-        var book = await _unitOfWork.Books.GetByIdAsync(id);
+        var book = await _unitOfWork.Books.Find(b => b.Id == id, ["Author", "Category", "Publisher"]);
         if (book == null)
         {
             throw new BookNotFoundException(id);
@@ -110,6 +110,7 @@ public class BookService : IBookService
         }
 
         _mapper.Map(dto, book);
+        book.AvailableCopies = book.TotalCopies;
         await _unitOfWork.Books.UpdateAsync(book);
         await _unitOfWork.CompleteAsync();
     }

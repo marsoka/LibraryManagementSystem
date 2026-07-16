@@ -21,41 +21,23 @@ public static class ApplicationServiceExtensions
                 configuration.GetConnectionString("DefaultConnection"));
         });
 
-        services.AddScoped<IAuthorRepository, AuthorRepository>();
 
         services.AddScoped<IAuthorService, AuthorService>();
 
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
-
         services.AddScoped<ICategoryService, CategoryService>();
-
-        services.AddScoped<IPublisherRepository, PublisherRepository>();
 
         services.AddScoped<IPublisherService, PublisherService>();
 
-        services.AddScoped<IBookRepository, BookRepository>();
-
         services.AddScoped<IBookService, BookService>();
 
-        services.AddScoped<IMemberRepository, MemberRepository>();
-
         services.AddScoped<IMemberService, MemberService>();
-
-        services.AddScoped<IBorrowingRepository, BorrowingRepository>();
 
         services.AddScoped<IBorrowingService, BorrowingService>();
 
         services.AddScoped<IAuthService, AuthService>();
 
-        services.AddScoped<IUserRepository, UserRepository>();
-
-        // services.AddScoped<JwtSettings>();
-
         services.AddScoped<IJwtService, JwtService>();
 
-        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-
-        // services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
